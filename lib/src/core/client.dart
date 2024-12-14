@@ -8,6 +8,7 @@ import 'package:pronote_dart/src/core/aes_helper.dart';
 import 'package:pronote_dart/src/core/login.dart';
 import 'package:pronote_dart/src/core/request.dart';
 import 'package:pronote_dart/src/encoders/account_kind.dart';
+import 'package:pronote_dart/src/models/assignment.dart';
 import 'package:pronote_dart/src/models/enums/account_kind.dart';
 import 'package:pronote_dart/src/models/enums/tab_location.dart';
 import 'package:pronote_dart/src/models/errors/access_denied_error.dart';
@@ -27,6 +28,7 @@ import 'package:pronote_dart/src/utils/clean_url.dart';
 
 import 'package:pronote_dart/src/models/errors/account_disabled_error.dart';
 import 'package:pronote_dart/src/utils/pronote_date.dart';
+import 'package:pronote_dart/src/utils/week_number.dart';
 
 class PronoteClient {
   final session = Session();
@@ -300,5 +302,57 @@ class PronoteClient {
       'DateDebut': {'_T': 7, 'V': encodePronoteDate(startDate)},
       ...endDateParam
     });
+  }
+
+  Future<dynamic> _homeworkFromWeek(TabLocation tab, int weekNumber,
+      [int? extendsToWeekNumber]) async {
+    final request = Request(session, 'PageCahierDeTexte', {
+      '_Signature_': {'onglet': tab.code},
+      'donnees': {
+        'domaine': {
+          '_T': 8,
+          'V': extendsToWeekNumber is int
+              ? '[$weekNumber..$extendsToWeekNumber]'
+              : '[$weekNumber]'
+        }
+      }
+    });
+
+    final response = await request.send();
+    return response.data['donnees'];
+  }
+
+  Future<dynamic> _homeworkFromIntervals(
+      TabLocation tab, DateTime startDate, DateTime endDate) async {
+    startDate = startDate.toUtc();
+    endDate = endDate.toUtc();
+
+    final startWeekNumber =
+        translateToWeekNumber(startDate, session.instance.firstMonday);
+    final endWeekNumber =
+        translateToWeekNumber(endDate, session.instance.firstMonday);
+
+    return _homeworkFromWeek(tab, startWeekNumber, endWeekNumber);
+  }
+
+  Future<List<Assignment>> assignmentsFromWeek(int weekNumber,
+      [int? extendsToWeekNumber]) async {
+    final reply = await _homeworkFromWeek(
+        TabLocation.assignments, weekNumber, extendsToWeekNumber);
+    return List<Assignment>.from(reply['ListeTravauxAFaire']['V']
+        .map((el) => Assignment.fromJSON(session, el)));
+  }
+
+  Future<List<Assignment>> assignmentsFromIntervals(
+      DateTime startDate, DateTime endDate) async {
+    final reply = await _homeworkFromIntervals(
+        TabLocation.assignments, startDate, endDate);
+    return List<Assignment>.from(reply['ListeTravauxAFaire']['V']
+        .map((el) => Assignment.fromJSON(session, el))
+        .where((el) =>
+            (startDate.isBefore(el.deadline) ||
+                startDate.isAtSameMomentAs(el.deadline)) &&
+            (endDate.isAfter(el.deadline) ||
+                endDate.isAtSameMomentAs(el.deadline))));
   }
 }
