@@ -10,6 +10,7 @@ import 'package:pronote_dart/src/core/request.dart';
 import 'package:pronote_dart/src/encoders/account_kind.dart';
 import 'package:pronote_dart/src/models/assignment.dart';
 import 'package:pronote_dart/src/models/enums/account_kind.dart';
+import 'package:pronote_dart/src/models/enums/entity_state.dart';
 import 'package:pronote_dart/src/models/enums/tab_location.dart';
 import 'package:pronote_dart/src/models/errors/access_denied_error.dart';
 import 'package:pronote_dart/src/models/errors/bad_credentials_error.dart';
@@ -354,5 +355,23 @@ class PronoteClient {
                 startDate.isAtSameMomentAs(el.deadline)) &&
             (endDate.isAfter(el.deadline) ||
                 endDate.isAtSameMomentAs(el.deadline))));
+  }
+
+  Future<void> assignmentStatus(String assignmentID, bool done) async {
+    final request = Request(session, 'SaisieTAFFaitEleve', {
+      '_Signature_': {
+        'onglet': TabLocation.assignments.code
+      },
+
+      'donnees': {
+        'listeTAF': [{
+          'E': EntityState.modification.code,
+          'TAFFait': done,
+          'N': assignmentID
+        }]
+      }
+    });
+
+    await request.send();
   }
 }
