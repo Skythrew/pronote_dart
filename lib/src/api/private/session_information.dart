@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import 'package:pronote_dart/src/encoders/account_kind.dart';
 import 'package:pronote_dart/src/models/enums/account_kind.dart';
 import 'package:pronote_dart/src/models/errors/busy_page_error.dart';
 import 'package:pronote_dart/src/models/errors/page_unavailable_error.dart';
@@ -18,7 +17,7 @@ Future<SessionInformation> sessionInformation(Session session, String base,
   });
 
   final uri = Uri.parse(
-      '$base/${encodeAccountKindToPath(kind)}?${queryParams.join('&')}');
+      '$base/${kind.encodeToPath()}?${queryParams.join('&')}');
 
   final html = (await http.get(uri)).body;
 

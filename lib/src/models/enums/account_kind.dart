@@ -9,5 +9,23 @@ enum AccountKind {
     return AccountKind.values.firstWhere((el) => el.code == code);
   }
 
+  String encodeToPath() {
+    String name;
+
+    switch (this) {
+      case AccountKind.student:
+        name = 'eleve';
+        break;
+      case AccountKind.parent:
+        name = 'parent';
+        break;
+      case AccountKind.teacher:
+        name = 'professeur';
+        break;
+    }
+
+    return 'mobile.$name.html';
+  }
+
   const AccountKind(this.code);
 }
