@@ -8,6 +8,7 @@ import 'package:pronote_dart/src/core/aes_helper.dart';
 import 'package:pronote_dart/src/core/login.dart';
 import 'package:pronote_dart/src/core/request.dart';
 import 'package:pronote_dart/src/encoders/account_kind.dart';
+import 'package:pronote_dart/src/models/account.dart';
 import 'package:pronote_dart/src/models/assignment.dart';
 import 'package:pronote_dart/src/models/enums/account_kind.dart';
 import 'package:pronote_dart/src/models/enums/entity_state.dart';
@@ -33,6 +34,7 @@ import 'package:pronote_dart/src/utils/week_number.dart';
 
 class PronoteClient {
   final session = Session();
+
   final Map<String, String> _headers = {};
 
   Future<String> _get(Uri url) async {
@@ -399,5 +401,15 @@ class PronoteClient {
     });
 
     await request.send();
+  }
+
+  Future<Account> account() async {
+    final request = Request(session, 'PageInfosPerso', {
+      '_Signature_': {'onglet': TabLocation.account.code}
+    });
+
+    final response = await request.send();
+
+    return Account.fromJSON(session, response.data['donnees']);
   }
 }
