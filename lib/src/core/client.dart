@@ -25,7 +25,6 @@ import 'package:pronote_dart/src/models/user_parameters.dart';
 import 'package:pronote_dart/src/utils/clean_url.dart';
 
 import 'package:pronote_dart/src/models/errors/account_disabled_error.dart';
-import 'package:pronote_dart/src/utils/encode_period.dart';
 
 class PronoteClient {
   final session = Session();
@@ -243,7 +242,7 @@ class PronoteClient {
   Future<GradesOverview> gradesOverview(Period period) async {
     final request = Request(session, 'DernieresNotes', {
       '_Signature_': {'onglet': TabLocation.grades.code},
-      'donnees': {'Periode': encodePeriod(period)}
+      'donnees': {'Periode': period.encode()}
     });
 
     final response = await request.send();

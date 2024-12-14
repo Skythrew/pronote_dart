@@ -16,5 +16,9 @@ class Period {
         decodePronoteDate(json['dateFin']['V']));
   }
 
+  Map<String, dynamic> encode() {
+    return {'N': id, 'G': kind, 'L': name};
+  }
+
   Period(this.id, this.name, this.kind, this.startDate, this.endDate);
 }
