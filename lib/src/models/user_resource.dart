@@ -47,6 +47,14 @@ class UserResource {
         tabs);
   }
 
+  Map<String, dynamic> encode() {
+    return {
+      'G': kind,
+      'L': name,
+      'N': id
+    };
+  }
+
   UserResource(
       this.id,
       this.kind,
