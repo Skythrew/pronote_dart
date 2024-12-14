@@ -48,11 +48,7 @@ class UserResource {
   }
 
   Map<String, dynamic> encode() {
-    return {
-      'G': kind,
-      'L': name,
-      'N': id
-    };
+    return {'G': kind, 'L': name, 'N': id};
   }
 
   UserResource(

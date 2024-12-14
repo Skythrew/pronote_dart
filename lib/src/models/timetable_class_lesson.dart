@@ -74,7 +74,9 @@ class TimetableClassLesson {
       }
     }
 
-    if (json['AvecCdT'] != null && json['AvecCdT'] && json['cahierDeTextes'] != null) {
+    if (json['AvecCdT'] != null &&
+        json['AvecCdT'] &&
+        json['cahierDeTextes'] != null) {
       lessonResourceID = json['cahierDeTextes']['V']['N'];
     }
 
