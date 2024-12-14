@@ -284,29 +284,20 @@ class PronoteClient {
         {'numeroSemaine': weekNumber, 'NumeroSemaine': weekNumber});
   }
 
-  Future<Timetable> timetableFromIntervals(DateTime startDate, DateTime? endDate) async {
+  Future<Timetable> timetableFromIntervals(
+      DateTime startDate, DateTime? endDate) async {
     final endDateParam = {};
 
     if (endDate != null) {
-      final endDateMap = {
-        '_T': 7,
-        'V': encodePronoteDate(endDate)
-      };
+      final endDateMap = {'_T': 7, 'V': encodePronoteDate(endDate)};
 
       endDateParam['dateFin'] = endDateMap;
       endDateParam['DateFin'] = endDateMap;
     }
-    
-    return timetable({
-      'dateDebut': {
-        '_T': 7,
-        'V': encodePronoteDate(startDate)
-      },
-      'DateDebut': {
-        '_T': 7,
-        'V': encodePronoteDate(startDate)
-      },
 
+    return timetable({
+      'dateDebut': {'_T': 7, 'V': encodePronoteDate(startDate)},
+      'DateDebut': {'_T': 7, 'V': encodePronoteDate(startDate)},
       ...endDateParam
     });
   }
