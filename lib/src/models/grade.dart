@@ -3,7 +3,7 @@ import 'package:pronote_dart/src/models/enums/attachment_kind.dart';
 import 'package:pronote_dart/src/models/grade_value.dart';
 import 'package:pronote_dart/src/models/session.dart';
 import 'package:pronote_dart/src/models/subject.dart';
-import 'package:pronote_dart/src/utils/pronote_date_decoder.dart';
+import 'package:pronote_dart/src/utils/pronote_date.dart';
 
 class Grade {
   /// The id of the grade.

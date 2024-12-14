@@ -2,7 +2,7 @@ import 'package:pronote_dart/src/models/session.dart';
 import 'package:pronote_dart/src/models/timetable_class_activity.dart';
 import 'package:pronote_dart/src/models/timetable_class_detention.dart';
 import 'package:pronote_dart/src/models/timetable_class_lesson.dart';
-import 'package:pronote_dart/src/utils/pronote_date_decoder.dart';
+import 'package:pronote_dart/src/utils/pronote_date.dart';
 import 'package:pronote_dart/src/utils/timings.dart';
 import 'package:pronote_dart/src/utils/week_number.dart';
 

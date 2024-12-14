@@ -1,4 +1,4 @@
-import 'package:pronote_dart/src/utils/pronote_date_decoder.dart';
+import 'package:pronote_dart/src/utils/pronote_date.dart';
 
 class Holiday {
   final String id;

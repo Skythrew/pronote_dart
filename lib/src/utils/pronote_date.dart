@@ -39,3 +39,15 @@ DateTime decodePronoteDate(String formatted) {
 
   throw UnreachableError();
 }
+
+String encodePronoteDate(DateTime date) {
+  final day = date.day;
+  final month = date.month;
+  final year = date.year;
+
+  final hours = date.hour;
+  final minutes = date.minute;
+  final seconds = date.second;
+
+  return '$day/$month/$year $hours:$minutes:$seconds';
+}

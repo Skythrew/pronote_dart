@@ -1,5 +1,5 @@
 import 'package:pronote_dart/src/utils/domain_decoder.dart';
-import 'package:pronote_dart/src/utils/pronote_date_decoder.dart';
+import 'package:pronote_dart/src/utils/pronote_date.dart';
 
 import 'package:pronote_dart/src/models/period.dart';
 import 'package:pronote_dart/src/models/holiday.dart';
