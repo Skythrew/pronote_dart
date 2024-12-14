@@ -10,4 +10,9 @@ class Session {
   late final InstanceParameters instance;
   late final UserParameters user;
   late final UserResource userResource;
+
+  /// Makes the session use another user resource.
+  void use(int index) {
+    userResource = user.resources[index];
+  }
 }
