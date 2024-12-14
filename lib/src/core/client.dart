@@ -9,12 +9,15 @@ import 'package:pronote_dart/src/core/login.dart';
 import 'package:pronote_dart/src/core/request.dart';
 import 'package:pronote_dart/src/encoders/account_kind.dart';
 import 'package:pronote_dart/src/models/enums/account_kind.dart';
+import 'package:pronote_dart/src/models/enums/tab_location.dart';
 import 'package:pronote_dart/src/models/errors/access_denied_error.dart';
 import 'package:pronote_dart/src/models/errors/bad_credentials_error.dart';
 import 'package:pronote_dart/src/models/errors/busy_page_error.dart';
 import 'package:pronote_dart/src/models/errors/page_unavailable_error.dart';
 import 'package:pronote_dart/src/models/errors/suspended_ip_error.dart';
+import 'package:pronote_dart/src/models/grades_overview.dart';
 import 'package:pronote_dart/src/models/instance_parameters.dart';
+import 'package:pronote_dart/src/models/period.dart';
 import 'package:pronote_dart/src/models/session.dart';
 import 'package:pronote_dart/src/models/session_information.dart';
 import 'package:http/http.dart' as http;
@@ -22,6 +25,7 @@ import 'package:pronote_dart/src/models/user_parameters.dart';
 import 'package:pronote_dart/src/utils/clean_url.dart';
 
 import 'package:pronote_dart/src/models/errors/account_disabled_error.dart';
+import 'package:pronote_dart/src/utils/encode_period.dart';
 
 class PronoteClient {
   final session = Session();
@@ -232,5 +236,18 @@ class PronoteClient {
   /// Makes the client use another user resource.
   void use(int index) {
     session.userResource = session.user.resources[index];
+  }
+
+  /// Gets grades overview for a specific period.
+  /// Including student's grades with averages and the global averages.
+  Future<GradesOverview> gradesOverview(Period period) async {
+    final request = Request(session, 'DernieresNotes', {
+      '_Signature_': {'onglet': TabLocation.grades.code},
+      'donnees': {'Periode': encodePeriod(period)}
+    });
+
+    final response = await request.send();
+
+    return GradesOverview.fromJSON(session, response.data['donnees']);
   }
 }
