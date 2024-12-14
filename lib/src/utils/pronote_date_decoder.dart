@@ -11,7 +11,7 @@ DateTime decodePronoteDate(String formatted) {
     final [day, month, year] = formatted.split('/').map((el) {
       return int.parse(el);
     }).toList();
-    return DateTime(year, month - 1, day);
+    return DateTime(year, month, day);
   } else if (longDateLongHoursRegex.hasMatch(formatted)) {
     final [date, time] = formatted.split(' ');
     final [day, month, year] = date.split('/').map((el) {
@@ -21,7 +21,7 @@ DateTime decodePronoteDate(String formatted) {
       return int.parse(el);
     }).toList();
 
-    final output = DateTime(year, month - 1, day, hours, minutes, seconds);
+    final output = DateTime(year, month, day, hours, minutes, seconds);
     return output;
   } else if (longDateShortHoursRegex.hasMatch(formatted)) {
     final [date, time] = formatted.split(' ');
@@ -33,7 +33,7 @@ DateTime decodePronoteDate(String formatted) {
     }).toList();
 
     final output = DateTime(
-        int.parse('$yearFirstTwoChars$year'), month - 1, day, hours, minutes);
+        int.parse('$yearFirstTwoChars$year'), month, day, hours, minutes);
     return output;
   }
 
