@@ -255,6 +255,33 @@ class PronoteClient {
     return GradesOverview.fromJSON(session, response.data['donnees']);
   }
 
+  Future<String> gradeReportPDF(Period period) async {
+    final request = Request(session, 'GenerationPDF', {
+      'donnees': {
+        'avecCodeCompetences': false,
+        'genreGenerationPDF': 2,
+        'options': {
+          'adapterHauteurService': false,
+          'desEleves': false,
+          'gererRectoVerso': false,
+          'hauteurServiceMax': 15,
+          'hauteurServiceMin': 10,
+          'piedMonobloc': true,
+          'portrait': true,
+          'taillePolice': 6.5,
+          'taillePoliceMin': 5,
+          'taillePolicePied': 6.5,
+          'taillePolicePiedMin': 5
+        },
+        'periode': period.encode()
+      },
+      '_Signature_': {'onglet': TabLocation.gradebook.code}
+    });
+
+    final response = await request.send();
+    return '${session.information.url}/${Uri.encodeComponent(response.data['donnees']['url']['V'])}';
+  }
+
   Future<Timetable> timetable(
       [Map<String, dynamic> additional = const {}]) async {
     final request = Request(session, 'PageEmploiDuTemps', {
@@ -359,16 +386,15 @@ class PronoteClient {
 
   Future<void> assignmentStatus(String assignmentID, bool done) async {
     final request = Request(session, 'SaisieTAFFaitEleve', {
-      '_Signature_': {
-        'onglet': TabLocation.assignments.code
-      },
-
+      '_Signature_': {'onglet': TabLocation.assignments.code},
       'donnees': {
-        'listeTAF': [{
-          'E': EntityState.modification.code,
-          'TAFFait': done,
-          'N': assignmentID
-        }]
+        'listeTAF': [
+          {
+            'E': EntityState.modification.code,
+            'TAFFait': done,
+            'N': assignmentID
+          }
+        ]
       }
     });
 
