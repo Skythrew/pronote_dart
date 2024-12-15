@@ -1,5 +1,6 @@
 import 'package:pronote_dart/src/core/request.dart';
 import 'package:pronote_dart/src/models/enums/tab_location.dart';
+import 'package:pronote_dart/src/models/evaluation.dart';
 import 'package:pronote_dart/src/models/grades_overview.dart';
 import 'package:pronote_dart/src/models/period.dart';
 import 'package:pronote_dart/src/models/session.dart';
@@ -42,4 +43,21 @@ Future<String> gradeReportPDF(Session session, Period period) async {
 
   final response = await request.send();
   return '${session.information.url}/${Uri.encodeComponent(response.data['donnees']['url']['V'])}';
+}
+
+
+Future<List<Evaluation>> evaluations(Session session, Period period) async {
+  final request = Request(session, 'DernieresEvaluations', {
+    '_Signature_': {
+      'onglet': TabLocation.evaluations.code
+    },
+
+    'donnees': {
+      'periode': period.encode()
+    }
+  });
+
+  final response = await request.send();
+
+  return List<Evaluation>.from(response.data['donnees']['listeEvaluations']['V'].map((el) => Evaluation.fromJSON(el)));
 }
