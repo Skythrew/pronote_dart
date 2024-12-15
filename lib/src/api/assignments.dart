@@ -81,3 +81,23 @@ Future<void> assignmentUploadFile(
 
   await request.send();
 }
+
+Future<void> assignmentRemoveFile(
+  Session session,
+  String assignmentID  
+) async {
+  final request = Request(session, 'SaisieTAFARendreEleve', {
+    '_Signature_': {
+      'onglet': TabLocation.assignments.code
+    },
+
+    'donnees': {
+      'listeFichiers': [{
+        'E': EntityState.modification.code,
+        'TAF': { 'N': assignmentID }
+      }]
+    }
+  });
+
+  await request.send();
+}
