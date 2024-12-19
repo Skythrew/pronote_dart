@@ -27,7 +27,7 @@ class ResourceContent {
       title: json['L'],
       description: json['descriptif']?['V'],
       category: ResourceContentCategory.fromInt(json['categorie']['V']['G']),
-      files: List<Attachment>.from(json['ListePieceJointe']['V'].map((el) => Attachment.fromJSON(session, json))),
+      files: List<Attachment>.from(json['ListePieceJointe']['V'].map((el) => Attachment.fromJSON(session, el))),
       themes: List<AssignmentTheme>.from(json['ListeThemes']['V'].map((el) => AssignmentTheme.fromJSON(el))),
       educativeValue: json['parcoursEducatif']
     );
